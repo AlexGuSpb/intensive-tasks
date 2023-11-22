@@ -7,24 +7,26 @@ public class Main {
     public static void main(String[] args) {
         int floors = 4;
         int entrances = 2;
-        int numDoors = 33;
+        int numDoors = 1;
 
         System.out.println(getFlatLocation(floors, entrances, numDoors));
     }
 
     static String getFlatLocation(int floorAmount, int entranceAmount, int flatNumber) {
-        int introductoryApatrments = 4;
-        int apartmentsEntrance = (floorAmount * introductoryApatrments) / entranceAmount;
-        int entranceNumber = (flatNumber - 1) / apartmentsEntrance + 1;
-        int floorNumber = ((flatNumber - 1) % apartmentsEntrance) / introductoryApatrments + 1;
+        int introductoryFlats = 4;
+        int flatsPerEntrance = (floorAmount * introductoryFlats) / entranceAmount;
+        int entranceNumber = (flatNumber - 1) / flatsPerEntrance + 1;
+        int flatWithinEntrance = (flatNumber - 1) % flatsPerEntrance;
+        int floorNumber = flatWithinEntrance / introductoryFlats + 1;
 
-        int position = ((flatNumber - 1) % introductoryApatrments) / 2;
-        String direction = (flatNumber % 2 == 0) ? "вправо" : "слева";
+        int position = flatWithinEntrance % introductoryFlats;
+        String positionDirection = (position < 2) ? "слева" : "справа";
+        String fromElevatorDirection = (position % 2 == 0) ? "влево" : "вправо";
 
-        if (flatNumber > floorAmount * entranceAmount * introductoryApatrments) {
-            System.out.println("Такой квартиры нет.");
+        if (flatNumber > floorAmount * entranceAmount * introductoryFlats || flatNumber <= 0) {
+            return "Такой квартиры нет.";
         }
-        return  floorNumber + " кв - " + entranceNumber + " подъезд, " + position + " этаж, " + direction
-                + " от лифта.";
+        return flatNumber + " кв — " + entranceNumber + " подъезд, " + floorNumber + " этаж, " + positionDirection
+                + " от лифта, " + fromElevatorDirection + ".";
     }
 }
