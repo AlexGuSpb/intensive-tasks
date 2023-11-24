@@ -5,9 +5,9 @@ package com.walking.intensive.chapter1.task2;
  */
 public class Main {
     public static void main(String[] args) {
-        int floors = 4;
-        int entrances = 2;
-        int numDoors = 1;
+        int floors = 10;
+        int entrances = 3;
+        int numDoors = 40;
 
         System.out.println(getFlatLocation(floors, entrances, numDoors));
     }
@@ -17,16 +17,21 @@ public class Main {
         int flatsPerEntrance = (floorAmount * introductoryFlats) / entranceAmount;
         int entranceNumber = (flatNumber - 1) / flatsPerEntrance + 1;
         int flatWithinEntrance = (flatNumber - 1) % flatsPerEntrance;
-        int floorNumber = flatWithinEntrance / introductoryFlats + 1;
+        int floorNumber;
+        if (floorAmount % 2 == 0) {
+            floorNumber = (flatWithinEntrance / introductoryFlats) % floorAmount + 1;
+        } else {
+            floorNumber = floorAmount - (flatWithinEntrance / introductoryFlats) % floorAmount;
+        }
 
         int position = flatWithinEntrance % introductoryFlats;
-        String positionDirection = (position < 2) ? "слева" : "справа";
-        String fromElevatorDirection = (position % 2 == 0) ? "влево" : "вправо";
+        String positionDirection = (position < 2) ? "справа" : "слева";
+        String fromElevatorDirection = (position % 2 == 0) ? "вправо" : "влево";
 
         if (flatNumber > floorAmount * entranceAmount * introductoryFlats || flatNumber <= 0) {
             return "Такой квартиры нет.";
         }
-        return flatNumber + " кв — " + entranceNumber + " подъезд, " + floorNumber + " этаж, " + positionDirection
-                + " от лифта, " + fromElevatorDirection + ".";
+        return flatNumber + " кв - " + entranceNumber + " подъезд, " + floorNumber + " этаж, " + positionDirection
+                + " от лифта, " + fromElevatorDirection;
     }
 }
